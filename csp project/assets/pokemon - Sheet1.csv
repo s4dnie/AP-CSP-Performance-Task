@@ -1,0 +1,11 @@
+ID,Name,Type,HP,Attack Stat,Defense Stat
+1,Charmander,Fire,39,52,43
+2,Squirtle,Water,44,48,65
+3,Bulbasaur,Grass,45,49,49
+4,Pikachu,Electric,35,55,40
+5,Jigglypuff,Normal,115,45,20
+6,Eevee,Normal,55,55,50
+7,Mew,Psychic,100,100,100
+8,Meowth,Normal,40,45,35
+9,Gengar,Poison,60,65,60
+10,Snorlax,Normal,160,110,65
