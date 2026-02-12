@@ -1,0 +1,16 @@
+body {
+    display: block;
+    
+}
+#starter-selector {
+    display:block;
+    margin: auto;
+}
+
+#starter-images {
+    width: 200px;
+    height: 200px;
+
+    display: flex;
+    justify-content:space-between;
+}

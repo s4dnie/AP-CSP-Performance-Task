@@ -3,30 +3,40 @@
 <head>
     <title>AP CSP Performance Task: Pokemon Battle Simulator</title>
     <meta charset="UTF-8">
-    <link rel ="stylesheet" href ="stylesheet.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sydnie Williams">
+    <meta name="description" content="games">
+    <link rel="stylesheet" href="./stylesheet.css">
 </head>
 
 <body>
     <h1>Pokemon Battle Simulator</h1>
     <div id="starter-selector">
         <h2>Choose a Starter Pokemon:</h2>
-        <div id ="starter-options">
-            <button>Charmander</button>
-            <button>Squirtle</button>
-            <button>Bulbasaur</button>
+        <div id="starter-images">
+            <img src="../assets/pokemon sprites/charmander.png" alt="An icon of the starter Pokemon Charmander."></img>
+            <img src="../assets/pokemon sprites/squirtle.png" alt="An icon of the starter Pokemon Squirtle."></img>
+            <img src="../assets/pokemon sprites/bulbasaur.png" alt="An icon of the starter Pokemon Bulbasaur."></img>
+        </div>
+        <div id="starter-options">
+            <input id="charmander_select" name="select_starter" type="radio">Charmander</input>
+
+            <input id="squirtle_select" name="select_starter" type="radio">Squirtle</input>
+
+            <input id="bulbasaur_select" name="select_starter" type="radio">Bulbasaur</input>
+
         </div>
     </div>
-    
-    <h2>Choose a Pokemon type to battle:</h2>
-    <select id = "pokemon-type-selector">
-        <option id = "random">Random</option>
-        <option id = "normal">Normal</option>
-        <option id = "fire">Fire</option>
-        <option id = "water">Water</option>
-        <option id = "grass">Grass</option>
-        <option id = "poison">Poison</option>
-        <option id = "electric">Electric</option>
+    <label for="pokemon-type-selector">Choose a Pokemon type to battle:</label>
+    <select id="pokemon-type-selector">
+        <option id="random">Random</option>
+        <option id="normal">Normal</option>
+        <option id="fire">Fire</option>
+        <option id="water">Water</option>
+        <option id="grass">Grass</option>
+        <option id="poison">Poison</option>
+        <option id="electric">Electric</option>
     </select>
-    <a id = "start" href="/home/s4dnie/Desktop/csp project/src/game.html"></a>
+    <br>
+    <a id="start" href="./game.html">Let's Battle!</a>
 </body>
