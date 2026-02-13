@@ -10,31 +10,45 @@
 </head>
 
 <body>
-    <h1 id="title" class="title">Pokemon Battle Simulator</h1>
+    <h1 class="title">Pokemon Battle Simulator</h1>
     <h2 class="subheading">Choose a Starter Pokemon:</h2>
-    <div class="image-wrapper">
-        <img src="../assets/pokemon sprites/charmander.png" alt="An icon of the starter Pokemon Charmander."
-            class="image"></img>
-        <img src="../assets/pokemon sprites/squirtle.png" alt="An icon of the starter Pokemon Squirtle."
-            class="image"></img>
-        <img src="../assets/pokemon sprites/bulbasaur.png" alt="An icon of the starter Pokemon Bulbasaur."></img>
-    </div>
-    <div id="starter-options">
-        <input id="charmander_select" name="select_starter" type="radio">Charmander</input>
-        <input id="squirtle_select" name="select_starter" type="radio">Squirtle</input>
-        <input id="bulbasaur_select" name="select_starter" type="radio">Bulbasaur</input>
-    </div>
-    <label for="pokemon-type-selector" class="subheading">Choose a Pokemon type to battle:</label>
-    <select id="pokemon-type-selector" class="button">
-        <option id="random">Random</option>
-        <option id="normal">Normal</option>
-        <option id="fire">Fire</option>
-        <option id="water">Water</option>
-        <option id="grass">Grass</option>
-        <option id="poison">Poison</option>
-        <option id="electric">Electric</option>
-    </select>
-    <br>
-    <a id="start" href="./game.html" class="button">Let's Battle!</a>
-    <script type="module" src ="script.js"></script>
+    <form action="./game.html" method="get">
+        <div id="starter-images" class="content-wrapper">
+            <div class="starter-option">
+                <img src="../assets/pokemon sprites/charmander.png" alt="An icon of the starter Pokemon Charmander."
+                    class="image">
+                <label class="radio-label">
+                    <input id="charmander_select" name="select_starter" type="radio" required>Charmander
+                </label>
+            </div>
+            <div class="starter-option">
+                <img src="../assets/pokemon sprites/squirtle.png" alt="An icon of the starter Pokemon Squirtle."
+                    class="image">
+                <label class="radio-label">
+                    <input id="squirtle_select" name="select_starter" type="radio">Squirtle
+                </label>
+            </div>
+            <div class="starter-option">
+                <img src="../assets/pokemon sprites/bulbasaur.png" alt="An icon of the starter Pokemon Bulbasaur."
+                    class="image">
+                <label class="radio-label">
+                    <input id="bulbasaur_select" name="select_starter" type="radio">Bulbasaur
+                </label>
+            </div>
+        </div>
+        <br>
+        <label for="pokemon-type-selector" class="subheading">Choose a Pokemon type to battle:</label>
+        <select id="pokemon-type-selector" class="button">
+            <option id="random">Random</option>
+            <option id="normal">Normal</option>
+            <option id="fire">Fire</option>
+            <option id="water">Water</option>
+            <option id="grass">Grass</option>
+            <option id="poison">Poison</option>
+            <option id="electric">Electric</option>
+        </select>
+        <br>
+        <input type="submit" class ="button" value="Let's Battle!">
+    </form>
+
 </body>

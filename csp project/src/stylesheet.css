@@ -1,13 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Farsan&display=swap');
 
 body {
-   background-color: #b8cbcf;
-}
-
-.image-wrapper {
-    display:flex;
+    background-color: #b8cbcf;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 100px;
 }
 
 .image {
@@ -15,30 +22,27 @@ body {
     height: 200px;
 }
 
-#starter-images {
-    width: 200px;
-    height: 200px;
-
-    display: flex;
-    justify-content:space-around;
-}
 
 .title {
     display: block;
     margin: auto;
 
     font-family: "Farsan", "Georgia", serif;
-    font-size: 36px;
+    font-size: 52px;
 
     color: #f1e864;
 
 }
+
 .subheading {
+    font-style:italic;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 24px;
     color: #1a266e;
-    
+
+
 }
+
 .button {
     font-size: 16px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -49,10 +53,28 @@ body {
 
     text-decoration: none;
     padding: 3px;
-    
+
 }
 
 .button:hover {
     background-color: #1a3e6e;
     color: #f1e864;
+}
+
+.radio-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    font-style:italic;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+.starter-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
