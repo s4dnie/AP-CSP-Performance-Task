@@ -1,10 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Farsan&display=swap');
+
 body {
-    display: block;
-    
+   background-color: #b8cbcf;
 }
-#starter-selector {
-    display:block;
-    margin: auto;
+
+.image-wrapper {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    width: 200px;
+    height: 200px;
 }
 
 #starter-images {
@@ -12,5 +20,39 @@ body {
     height: 200px;
 
     display: flex;
-    justify-content:space-between;
+    justify-content:space-around;
+}
+
+.title {
+    display: block;
+    margin: auto;
+
+    font-family: "Farsan", "Georgia", serif;
+    font-size: 36px;
+
+    color: #f1e864;
+
+}
+.subheading {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    color: #1a266e;
+    
+}
+.button {
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+    border: 1px solid #1a3e6e;
+    background-color: #f1e864;
+    color: #1a3e6e;
+
+    text-decoration: none;
+    padding: 3px;
+    
+}
+
+.button:hover {
+    background-color: #1a3e6e;
+    color: #f1e864;
 }
