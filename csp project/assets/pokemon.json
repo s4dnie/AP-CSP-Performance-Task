@@ -4,79 +4,79 @@
 		"Name": "Charmander",
 		"Type": "Fire",
 		"HP": "39",
-		"Attack Stat": "52",
-		"Defense Stat": "43"
+		"Attack": "52",
+		"Defense": "43"
 	},
 	{
 		"ID": "2",
 		"Name": "Squirtle",
 		"Type": "Water",
 		"HP": "44",
-		"Attack Stat": "48",
-		"Defense Stat": "65"
+		"Attack": "48",
+		"Defense": "65"
 	},
 	{
 		"ID": "3",
 		"Name": "Bulbasaur",
 		"Type": "Grass",
 		"HP": "45",
-		"Attack Stat": "49",
-		"Defense Stat": "49"
+		"Attack": "49",
+		"Defense": "49"
 	},
 	{
 		"ID": "4",
 		"Name": "Pikachu",
 		"Type": "Electric",
 		"HP": "35",
-		"Attack Stat": "55",
-		"Defense Stat": "40"
+		"Attack": "55",
+		"Defense": "40"
 	},
 	{
 		"ID": "5",
 		"Name": "Jigglypuff",
 		"Type": "Normal",
 		"HP": "115",
-		"Attack Stat": "45",
-		"Defense Stat": "20"
+		"Attack": "45",
+		"Defense": "20"
 	},
 	{
 		"ID": "6",
 		"Name": "Eevee",
 		"Type": "Normal",
 		"HP": "55",
-		"Attack Stat": "55",
-		"Defense Stat": "50"
+		"Attack": "55",
+		"Defense": "50"
 	},
 	{
 		"ID": "7",
 		"Name": "Mew",
 		"Type": "Psychic",
 		"HP": "100",
-		"Attack Stat": "100",
-		"Defense Stat": "100"
+		"Attack": "100",
+		"Defense": "100"
 	},
 	{
 		"ID": "8",
 		"Name": "Meowth",
 		"Type": "Normal",
 		"HP": "40",
-		"Attack Stat": "45",
-		"Defense Stat": "35"
+		"Attack": "45",
+		"Defense": "35"
 	},
 	{
 		"ID": "9",
 		"Name": "Gengar",
 		"Type": "Poison",
 		"HP": "60",
-		"Attack Stat": "65",
-		"Defense Stat": "60"
+		"Attack": "65",
+		"Defense": "60"
 	},
 	{
 		"ID": "10",
 		"Name": "Snorlax",
 		"Type": "Normal",
 		"HP": "160",
-		"Attack Stat": "110",
-		"Defense Stat": "65"
+		"Attack": "110",
+		"Defense": "65"
 	}
 ]
