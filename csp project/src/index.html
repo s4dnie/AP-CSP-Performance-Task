@@ -6,49 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Sydnie Williams">
     <meta name="description" content="games">
-    <link rel="stylesheet" href="./stylesheet.css">
+    <link rel="stylesheet" href="./home-stylesheet.css">
 </head>
 
 <body>
     <h1 class="title">Pokemon Battle Simulator</h1>
     <h2 class="subheading">Choose a Starter Pokemon:</h2>
-    <form action="./game.html" method="get">
+    <form id="form" method="get">
         <div id="starter-images" class="content-wrapper">
             <div class="starter-option">
                 <img src="../assets/pokemon sprites/charmander.png" alt="An icon of the starter Pokemon Charmander."
                     class="image">
                 <label class="radio-label">
-                    <input id="charmander_select" name="select_starter" type="radio" required>Charmander
+                    <input id="charmander_select" name="select-starter" type="radio" value="charmander"
+                        required>Charmander
                 </label>
             </div>
             <div class="starter-option">
                 <img src="../assets/pokemon sprites/squirtle.png" alt="An icon of the starter Pokemon Squirtle."
                     class="image">
                 <label class="radio-label">
-                    <input id="squirtle_select" name="select_starter" type="radio">Squirtle
+                    <input id="squirtle_select" name="select-starter" type="radio" value="squirtle">Squirtle
                 </label>
             </div>
             <div class="starter-option">
                 <img src="../assets/pokemon sprites/bulbasaur.png" alt="An icon of the starter Pokemon Bulbasaur."
                     class="image">
                 <label class="radio-label">
-                    <input id="bulbasaur_select" name="select_starter" type="radio">Bulbasaur
+                    <input id="bulbasaur_select" name="select-starter" type="radio" value="bulbasaur">Bulbasaur
                 </label>
             </div>
         </div>
         <br>
-        <label for="pokemon-type-selector" class="subheading">Choose a Pokemon type to battle:</label>
-        <select id="pokemon-type-selector" class="button">
-            <option id="random">Random</option>
-            <option id="normal">Normal</option>
-            <option id="fire">Fire</option>
-            <option id="water">Water</option>
-            <option id="grass">Grass</option>
-            <option id="poison">Poison</option>
-            <option id="electric">Electric</option>
-        </select>
+        <div id="comp-starter-wrapper" class="content-wrapper" style="gap: 5px;">
+            <h2 class="subheading">Can the opponent be a starter pokemon?</h2>
+            <label class="radio-label">
+                <input type="radio" id="comp-starter-yes" name="is-comp-starter" value="true" required>Yes
+            </label>
+            <label class="radio-label">
+                <input type="radio" id="comp-starter-no" name="is-comp-starter" value="false">No
+            </label>
+        </div>
         <br>
-        <input type="submit" class ="button" value="Let's Battle!">
+        <input type="submit" class="button" style="display:block; margin: 0 auto;" value="Let's Battle!">
     </form>
-
+    <script src="./gameSetup.js" type="module" defer></script>
 </body>

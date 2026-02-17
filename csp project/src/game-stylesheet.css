@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Press+Start+2P&display=swap');
+
+body {
+    overflow: hidden;
+}
+
+#game-wrapper {
+    display: grid;
+    grid-template-rows: 0.5fr 0.5fr 0.5fr 0.5fr;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.pokemon-name{
+    user-select: none;
+    font-family: 'Press Start 2P', cursive;
+    color: black;
+}
+.pokemon-battle-display {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+}
+
+#player-interface {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    grid-row: 2 / 3;
+}
+
+#image-action-wrapper {
+    user-select: none;
+    display: flex;
+    gap: 20px;
+    justify-items: center;
+}
+
+#action-buttons {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    gap: 10px;
+}
+
+#defend-button {
+    user-select: none;
+    font-family: 'Press Start 2P', cursive;
+
+    color: white;
+    background-color: #323ecaea;
+
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#defend-button:hover {
+    background-color: #151c64ea;
+}
+
+#attack-button {
+    
+    font-family: 'Press Start 2P', cursive;
+
+    color: white;
+    background-color: #ca3232ea;
+
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#attack-button:hover {
+    background-color: #641515ea;
+}
+
+
+#opponent-interface {
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    grid-column: 3/ 4;
+    grid-row: 2 / 3;
+}
+
+.health-wrapper {
+    pointer-events: none;
+    overflow: hidden;
+    height: 30px;
+    width: 350px;
+    position: relative;
+
+    background-color: #d4cece;
+    border-radius: 5px;
+}
+
+.health-bar {
+    pointer-events: none;
+
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: #9be099ea;
+
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 5px;
+
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+}
+
+#message-bar {
+    user-select: none;
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+
+    background-color:#ccc8c8a4;
+    border: 0.5px solid black;
+    border-radius: 5px;
+
+    font-family:'Courier New', Courier, monospace;
+    font-weight:bold;
+    font-size: 30px;
+
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}

@@ -1,82 +1,92 @@
 [
 	{
-		"ID": "1",
+		"ID": 1,
 		"Name": "Charmander",
 		"Type": "Fire",
-		"HP": "39",
-		"Attack": "52",
-		"Defense": "43"
+		"HP": 39,
+		"Attack": 52,
+		"Defense": 43,
+		"Icon": "../assets/pokemon sprites/charmander.png"
 	},
 	{
-		"ID": "2",
+		"ID": 2,
 		"Name": "Squirtle",
 		"Type": "Water",
-		"HP": "44",
-		"Attack": "48",
-		"Defense": "65"
+		"HP": 44,
+		"Attack": 48,
+		"Defense": 65,
+		"Icon": "../assets/pokemon sprites/squirtle.png"
 	},
 	{
-		"ID": "3",
+		"ID": 3,
 		"Name": "Bulbasaur",
 		"Type": "Grass",
-		"HP": "45",
-		"Attack": "49",
-		"Defense": "49"
+		"HP": 45,
+		"Attack": 49,
+		"Defense": 49,
+		"Icon": "../assets/pokemon sprites/bulbasaur.png"
 	},
 	{
-		"ID": "4",
+		"ID": 4,
 		"Name": "Pikachu",
 		"Type": "Electric",
-		"HP": "35",
-		"Attack": "55",
-		"Defense": "40"
+		"HP": 35,
+		"Attack": 55,
+		"Defense": 40,
+		"Icon": "../assets/pokemon sprites/pikachu.png"
 	},
 	{
-		"ID": "5",
+		"ID": 5,
 		"Name": "Jigglypuff",
 		"Type": "Normal",
-		"HP": "115",
-		"Attack": "45",
-		"Defense": "20"
+		"HP": 115,
+		"Attack": 45,
+		"Defense": 20,
+		"Icon": "../assets/pokemon sprites/jigglypuff.png"
 	},
 	{
-		"ID": "6",
+		"ID": 6,
 		"Name": "Eevee",
 		"Type": "Normal",
-		"HP": "55",
-		"Attack": "55",
-		"Defense": "50"
+		"HP": 55,
+		"Attack": 55,
+		"Defense": 50,
+		"Icon": "../assets/pokemon sprites/eevee.png"
 	},
 	{
-		"ID": "7",
+		"ID": 7,
 		"Name": "Mew",
 		"Type": "Psychic",
-		"HP": "100",
-		"Attack": "100",
-		"Defense": "100"
+		"HP": 100,
+		"Attack": 100,
+		"Defense": 100,
+		"Icon": "../assets/pokemon sprites/mew.png"
 	},
 	{
-		"ID": "8",
+		"ID": 8,
 		"Name": "Meowth",
 		"Type": "Normal",
-		"HP": "40",
-		"Attack": "45",
-		"Defense": "35"
+		"HP": 40,
+		"Attack": 45,
+		"Defense": 35,
+		"Icon": "../assets/pokemon sprites/meowth.png"
 	},
 	{
-		"ID": "9",
+		"ID": 9,
 		"Name": "Gengar",
 		"Type": "Poison",
-		"HP": "60",
-		"Attack": "65",
-		"Defense": "60"
+		"HP": 60,
+		"Attack": 65,
+		"Defense": 60,
+		"Icon": "../assets/pokemon sprites/gengar.png"
 	},
 	{
-		"ID": "10",
+		"ID": 10,
 		"Name": "Snorlax",
 		"Type": "Normal",
-		"HP": "160",
-		"Attack": "110",
-		"Defense": "65"
+		"HP": 160,
+		"Attack": 110,
+		"Defense": 65,
+		"Icon": "../assets/pokemon sprites/snorlax.png"
 	}
 ]
