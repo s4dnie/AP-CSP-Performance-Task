@@ -107,29 +107,7 @@ function playerTurn() {
     });
 }
 
-/*function computerTurn() {
-    setTimeout(() => {
-        actionBar.innerText = compPokemon.Name + "'s turn.";
-        setTimeout(() => {
-            let choice = Math.floor(Math.random() * 2);
-            if (choice == 0) {
-                const dmg = calculateDamage(compPokemon.Attack, compPokemon.Defense, compPokemon, playerPokemon);
-                playerPokemon.HP -= dmg;
-
-                playerHealth.innerText = playerPokemon.HP + " HP";
-                actionBar.innerText = compPokemon.Name + " dealt " + dmg + " damage!";
-            } else {
-                const defenseBoost = Math.round(Math.random() * (10 - 5) + 5);
-
-                compPokemon.Defense += defenseBoost;
-                actionBar.innerText = compPokemon.Name + " received " + defenseBoost + " defense points.";
-            }
-        }, 5000);
-    }, 5000);
-}
-*/
-
-function c() {
+function computerTurn() {
     actionBar.innerText = compPokemon.Name + "'s turn.";
     return new Promise((resolve) => {
         let choice = Math.floor(Math.random() * 2);
@@ -153,15 +131,18 @@ function c() {
                 let completedTurn = true;
                 resolve(completedTurn);
             }, 5000)
-
         }
     });
 }
+
 async function gameLoop() {
     if (playerPokemon.HP <= 0) { endGame(); return; }
     await playerTurn();
     if (compPokemon.HP <= 0) { endGame(); return; }
-    await c();
+    setTimeout(async () => {await computerTurn();}, 5000);
+    if (compPokemon.HP > 0 && playerPokemon.HP > 0) {
+       return gameLoop(); 
+    }
 }
 
 
