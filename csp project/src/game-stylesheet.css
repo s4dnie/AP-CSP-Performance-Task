@@ -96,7 +96,7 @@ body {
     width: 350px;
     position: relative;
 
-    background-color: #d4cece;
+    background-color: #ac2929;
     border-radius: 5px;
 }
 
@@ -136,4 +136,13 @@ body {
     display: flex;
     justify-content: center; 
     align-items: center;
+}
+
+#audio-control {
+    width: 45px;
+    height: 25px;
+}
+
+#audio-control:hover {
+    transform: scale(1.25);
 }

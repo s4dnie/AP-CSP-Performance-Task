@@ -6,8 +6,12 @@ const defendButton = document.getElementById("defend-button");
 
 const playerPokemon = getPlayerPokemon(localStorage.getItem("selection"));
 const compPokemon = getCompPokemon();
+const plrMaxHP = playerPokemon.HP;
+const compMaxHP = compPokemon.HP;
 const playerHealth = document.getElementById("player-health");
 const compHealth = document.getElementById("opponent-health");
+
+
 
 
 function getPlayerPokemon(selection) {
@@ -70,8 +74,23 @@ function initializeDisplay(plr, comp) {
 
     playerHealth.innerText = plr.HP + " HP";
     compHealth.innerText = comp.HP + " HP";
-}
 
+
+
+    const audioControl = document.getElementById("audio-control");
+    const theme = new Audio("../assets/pokemon_battleMusic.m4a");
+    theme.loop = true;
+
+    audioControl.addEventListener("click", () => {
+        if (theme.paused == true) {
+            theme.play();
+            audioControl.src = "../assets/audio_mute.png";
+        } else {
+            theme.pause();
+            audioControl.src = "../assets/audio_unmute.png";
+        }
+    })
+}
 
 function playerTurn() {
     actionBar.innerText = playerPokemon.Name + "'s turn.";
@@ -85,11 +104,14 @@ function playerTurn() {
 
             const dmg = calculateDamage(playerPokemon.Attack, playerPokemon.Defense, playerPokemon, compPokemon);
             compPokemon.HP -= dmg;
+            compPokemon.HP = Math.max(0, compPokemon.HP);
+            let healthPercent = (compPokemon.HP / compMaxHP) * 100;
+
+            compHealth.style.width = healthPercent + "%";
             compHealth.innerText = compPokemon.HP + " HP";
             actionBar.innerText = playerPokemon.Name + " dealt " + dmg + " damage!";
 
-            let completedTurn = true;
-            resolve(completedTurn);
+            resolve();
         })
 
         defendButton.addEventListener("click", () => {
@@ -100,8 +122,7 @@ function playerTurn() {
             playerPokemon.Defense += defenseBoost;
             actionBar.innerText = playerPokemon.Name + " received " + defenseBoost + " defense points.";
 
-            let completedTurn = true;
-            resolve(completedTurn);
+            resolve();
         });
 
     });
@@ -114,12 +135,15 @@ function computerTurn() {
         if (choice == 0) {
             const dmg = calculateDamage(compPokemon.Attack, compPokemon.Defense, compPokemon, playerPokemon);
             playerPokemon.HP -= dmg;
+            playerPokemon.HP = Math.max(0, playerPokemon.HP);
             setTimeout(() => {
+                let healthPercent = (playerPokemon.HP / plrMaxHP) * 100;
+
+                playerHealth.style.width = healthPercent + "%";
                 playerHealth.innerText = playerPokemon.HP + " HP";
                 actionBar.innerText = compPokemon.Name + " dealt " + dmg + " damage!";
 
-                let completedTurn = true;
-                resolve(completedTurn);
+                resolve();
             }, 5000)
 
         } else {
@@ -128,21 +152,31 @@ function computerTurn() {
                 compPokemon.Defense += defenseBoost;
                 actionBar.innerText = compPokemon.Name + " received " + defenseBoost + " defense points.";
 
-                let completedTurn = true;
-                resolve(completedTurn);
+                resolve();
             }, 5000)
         }
     });
 }
 
 async function gameLoop() {
-    if (playerPokemon.HP <= 0) { endGame(); return; }
-    await playerTurn();
-    if (compPokemon.HP <= 0) { endGame(); return; }
-    setTimeout(async () => {await computerTurn();}, 5000);
-    if (compPokemon.HP > 0 && playerPokemon.HP > 0) {
-       return gameLoop(); 
+    while (playerPokemon.HP > 0 && compPokemon.HP > 0) {
+        await playerTurn();
+        if (compPokemon.HP <= 0) break;
+
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+
+        await computerTurn();
+        if (playerPokemon.HP <= 0) break;
+
+        await new Promise((resolve) => setTimeout(resolve, 5000));
     }
+
+    if (playerPokemon.HP > 0 && compPokemon.HP <= 0) {
+        actionBar.innerText = playerPokemon.Name + " Wins!";
+    } else {
+        actionBar.innerText = compPokemon.Name + " Wins!";
+    }
+    
 }
 
 

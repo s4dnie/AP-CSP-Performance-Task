@@ -12,9 +12,7 @@ form.addEventListener("submit", (e) => {
 
     window.location.href = "./battle.html";
 
-    const theme = new Audio("../assets/pokemon_battleMusic.m4a");
-    theme.loop = true;
-    theme.play();
+    
 });
 
 
