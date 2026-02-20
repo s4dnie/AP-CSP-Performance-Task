@@ -60,12 +60,12 @@ function calculateDamage(attack, defense, plr1, plr2) {
 }
 
 function calculateHeal(currentHP, maxHP) {
-    if (currentHP < (maxHP / 2)) {
-        let HPBoost = Math.floor(currentHP * .0625 * 100);
+    if (currentHP <= (maxHP / 2)) {
+        let HPBoost = Math.floor(currentHP * 6.25);
         let difference = HPBoost - currentHP;
         return difference;
     } else {
-        let HPBoost = Math.floor(currentHP * .0125 * 100);
+        let HPBoost = Math.floor(currentHP * 1.25);
         let difference = HPBoost - currentHP;
         return difference;
     }
@@ -106,7 +106,7 @@ function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthE
         const dmg = calculateDamage(plr.Attack, plr.Defense, plr, opponent);
         opponent.HP -= dmg;
         opponent.HP = Math.max(0, opponent.HP);
-
+        console.log(opponent.Name + "\n" + opponent.HP);
         let healthPercent = (opponent.HP / opponentMaxHP) * 100;
 
         OpponentHealthElem.style.width = healthPercent + "%";
@@ -114,8 +114,8 @@ function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthE
         actionBarElem.innerText = plr.Name + " dealt " + dmg + " damage!";
     } else if (actionType === "heal") {
         const HPBoost = calculateHeal(plr.HP, plrMaxHP);
-        plr.HP += HPBoost;
-        plr.HP = Math.min(plr.HP, plrMaxHP);
+        console.log(plr.Name + "\n" + plr.HP);
+
 
         let healthPercent = (plr.HP / plrMaxHP) * 100;
 
@@ -135,19 +135,19 @@ function playerTurn() {
             attackButton.disabled = true;
             healButton.disabled = true;
             performAction(plrPokemon, compPokemon, "attack", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
-            resolve();
         }, { once: true });
         healButton.addEventListener("click", () => {
             attackButton.disabled = true;
             healButton.disabled = true;
             performAction(plrPokemon, compPokemon, "heal", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
-            resolve();
         }, { once: true });
+        resolve();
     });
 }
 
 function computerTurn() {
     actionBar.innerText = compPokemon.Name + "'s turn.";
+
     return new Promise((resolve) => {
         setTimeout(() => {
             if (compPokemon.HP >= (compPokemon.HP * 0.7)) {
@@ -175,8 +175,11 @@ function endGame() {
     } else {
         actionBar.innerText = compPokemon.Name + " Wins!";
     }
-    setTimeout(alert("The game has ended. You will now be taken to the home page."), 5000);
-    window.location.pathname = "/csp%20project/src/index.html";
+
+    setTimeout(() => {
+        alert("The game has ended. You will now be taken to the home page.")
+        window.location.pathname = "/csp%20project/src/index.html";
+    }, 5000);
 }
 
 async function gameLoop() {
