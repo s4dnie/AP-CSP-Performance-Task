@@ -59,14 +59,14 @@ function calculateDamage(attack, defense, plr1, plr2) {
     return Math.round(baseDmg);
 }
 
-function calculateHeal(hp, maxHP) {
-    if (hp < (maxHP / 2)) {
-        let HPBoost = Math.floor(hp * .0625 * 100);
-        let difference = hp - HPBoost;
+function calculateHeal(currentHP, maxHP) {
+    if (currentHP < (maxHP / 2)) {
+        let HPBoost = Math.floor(currentHP * .0625 * 100);
+        let difference = HPBoost - currentHP;
         return difference;
     } else {
-        let HPBoost = Math.floor(hp * .0125 * 100);
-        let difference = HPBoost - hp;
+        let HPBoost = Math.floor(currentHP * .0125 * 100);
+        let difference = HPBoost - currentHP;
         return difference;
     }
 }
@@ -101,84 +101,81 @@ function initializeDisplay(plr, comp) {
     })
 }
 
+function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthElem, plrMaxHP, opponentMaxHP, actionBarElem) {
+    if (actionType === "attack") {
+        const dmg = calculateDamage(plr.Attack, plr.Defense, plr, opponent);
+        opponent.HP -= dmg;
+        opponent.HP = Math.max(0, opponent.HP);
+
+        let healthPercent = (opponent.HP / opponentMaxHP) * 100;
+
+        OpponentHealthElem.style.width = healthPercent + "%";
+        OpponentHealthElem.innerText = opponent.HP + " HP";
+        actionBarElem.innerText = plr.Name + " dealt " + dmg + " damage!";
+    } else if (actionType === "heal") {
+        const HPBoost = calculateHeal(plr.HP, plrMaxHP);
+        plr.HP += HPBoost;
+        plr.HP = Math.min(plr.HP, plrMaxHP);
+
+        let healthPercent = (plr.HP / plrMaxHP) * 100;
+
+        plrHealthElem.style.width = healthPercent + "%";
+        plrHealthElem.innerText = plr.HP + " HP";
+        actionBarElem.innerText = plr.Name + " recovered " + HPBoost + " HP.";
+    }
+}
+
+
 function playerTurn() {
     actionBar.innerText = plrPokemon.Name + "'s turn.";
     attackButton.disabled = false;
     healButton.disabled = false;
-
     return new Promise((resolve) => {
         attackButton.addEventListener("click", () => {
             attackButton.disabled = true;
             healButton.disabled = true;
-
-            const dmg = calculateDamage(plrPokemon.Attack, plrPokemon.Defense, plrPokemon, compPokemon);
-            compPokemon.HP -= dmg;
-            compPokemon.HP = Math.max(0, compPokemon.HP);
-            let healthPercent = (compPokemon.HP / compMaxHP) * 100;
-
-            compHealth.style.width = healthPercent + "%";
-            compHealth.innerText = compPokemon.HP + " HP";
-            actionBar.innerText = plrPokemon.Name + " dealt " + dmg + " damage!";
-
+            performAction(plrPokemon, compPokemon, "attack", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
             resolve();
-        }, { once: true })
-
+        }, { once: true });
         healButton.addEventListener("click", () => {
             attackButton.disabled = true;
             healButton.disabled = true;
-
-            const HPBoost = calculateHeal(plrPokemon.HP, plrMaxHP);
-            plrPokemon.HP += HPBoost;
-            plrPokemon.HP = Math.min(plrPokemon.HP, plrMaxHP);
-            let healthPercent = (plrPokemon.HP / plrMaxHP) * 100;
-
-            playerHealth.style.width = healthPercent + "%";
-            playerHealth.innerText = plrPokemon.HP + " HP";
-            actionBar.innerText = plrPokemon.Name + " recovered " + HPBoost + " HP.";
-
+            performAction(plrPokemon, compPokemon, "heal", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
             resolve();
         }, { once: true });
-
     });
 }
 
 function computerTurn() {
     actionBar.innerText = compPokemon.Name + "'s turn.";
     return new Promise((resolve) => {
-        let choice = Math.floor(Math.random() * 2);
-        if (choice == 0) {
-            const dmg = calculateDamage(compPokemon.Attack, compPokemon.Defense, compPokemon, plrPokemon);
-            plrPokemon.HP -= dmg;
-            plrPokemon.HP = Math.max(0, plrPokemon.HP);
-            setTimeout(() => {
-                let healthPercent = (plrPokemon.HP / plrMaxHP) * 100;
-
-                playerHealth.style.width = healthPercent + "%";
-                playerHealth.innerText = plrPokemon.HP + " HP";
-                actionBar.innerText = compPokemon.Name + " dealt " + dmg + " damage!";
-
-                resolve();
-            }, 5000)
-
-        } else {
-            const HPBoost = calculateHeal(compPokemon.HP, compMaxHP);
-            setTimeout(() => {
-                compPokemon.HP += HPBoost;
-                compPokemon.HP = Math.min(plrPokemon.HP, plrMaxHP);
-                let healthPercent = (compPokemon.HP / compMaxHP) * 100;
-
-                compHealth.style.width = healthPercent + "%";
-                compHealth.innerText = compPokemon.HP + " HP";
-                actionBar.innerText = compPokemon.Name + " recovered " + HPBoost + " HP.";
-
-                resolve();
-            }, 5000)
-        }
+        setTimeout(() => {
+            if (compPokemon.HP >= (compPokemon.HP * 0.7)) {
+                if (Math.random() < 0.7) {
+                    performAction(compPokemon, plrPokemon, "attack", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                } else {
+                    performAction(compPokemon, plrPokemon, "heal", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                }
+            } else {
+                if (Math.random() < 0.7) {
+                    performAction(compPokemon, plrPokemon, "heal", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                } else {
+                    performAction(compPokemon, plrPokemon, "attack", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                }
+            }
+            resolve();
+        }, 5000);
     });
 }
 
+
 function endGame() {
-    alert("The game has ended. You will now be taken to the home page.");
+    if (plrPokemon.HP > 0 && compPokemon.HP <= 0) {
+        actionBar.innerText = plrPokemon.Name + " Wins!";
+    } else {
+        actionBar.innerText = compPokemon.Name + " Wins!";
+    }
+    setTimeout(alert("The game has ended. You will now be taken to the home page."), 5000);
     window.location.pathname = "/csp%20project/src/index.html";
 }
 
@@ -195,12 +192,7 @@ async function gameLoop() {
         await new Promise((resolve) => setTimeout(resolve, 5000));
     }
 
-    if (plrPokemon.HP > 0 && compPokemon.HP <= 0) {
-        actionBar.innerText = plrPokemon.Name + " Wins!";
-    } else {
-        actionBar.innerText = compPokemon.Name + " Wins!";
-    }
-
+    endGame();
 }
 
 initializeDisplay(plrPokemon, compPokemon);
