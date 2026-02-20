@@ -45,20 +45,20 @@ body {
     gap: 10px;
 }
 
-#defend-button {
+#heal-button {
     user-select: none;
     font-family: 'Press Start 2P', cursive;
 
     color: white;
-    background-color: #323ecaea;
+    background-color: #4bca32ea;
 
     border: none;
     padding: 10px;
     border-radius: 5px;
 }
 
-#defend-button:hover {
-    background-color: #151c64ea;
+#heal-button:hover {
+    background-color: #3f6415ea;
 }
 
 #attack-button {
@@ -146,3 +146,7 @@ body {
 #audio-control:hover {
     transform: scale(1.25);
 }
+
+/*Credits
+Font Press Start 2P imported from Google Fonts under SIL Open Font License
+*/

@@ -10,9 +10,7 @@ form.addEventListener("submit", (e) => {
     localStorage.setItem("selection", starter);
     localStorage.setItem("canOpponentBeStarter", opponentCanBeStarter);
 
-    window.location.href = "./battle.html";
-
-    
+    window.location.href = "./battle.html";  
 });
 
 

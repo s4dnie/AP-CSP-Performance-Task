@@ -2,11 +2,11 @@ import pokemonList from "../assets/pokemon.json" with {type: "json"};
 
 const actionBar = document.getElementById("message-bar");
 const attackButton = document.getElementById("attack-button");
-const defendButton = document.getElementById("defend-button");
+const healButton = document.getElementById("heal-button");
 
-const playerPokemon = getPlayerPokemon(localStorage.getItem("selection"));
+const plrPokemon = getPlayerPokemon(localStorage.getItem("selection"));
 const compPokemon = getCompPokemon();
-const plrMaxHP = playerPokemon.HP;
+const plrMaxHP = plrPokemon.HP;
 const compMaxHP = compPokemon.HP;
 const playerHealth = document.getElementById("player-health");
 const compHealth = document.getElementById("opponent-health");
@@ -17,8 +17,8 @@ const compHealth = document.getElementById("opponent-health");
 function getPlayerPokemon(selection) {
     for (let i = 0; i < pokemonList.length; i++) {
         if (selection.toLowerCase() == pokemonList[i]["Name"].toLowerCase()) {
-            const playerPokemon = pokemonList[i];
-            return playerPokemon;
+            const plrPokemon = pokemonList[i];
+            return plrPokemon;
         }
     }
 }
@@ -43,7 +43,7 @@ function calculateDamage(attack, defense, plr1, plr2) {
         case "WaterFire":
             baseDmg = Math.round(baseDmg * 2);
             return baseDmg;
-        case "WaterElectric":
+        case "ElectricWater":
             baseDmg = Math.round(baseDmg * 3);
             return baseDmg;
         case "WaterGrass":
@@ -59,6 +59,17 @@ function calculateDamage(attack, defense, plr1, plr2) {
     return Math.round(baseDmg);
 }
 
+function calculateHeal(hp, maxHP) {
+    if (hp < (maxHP / 2)) {
+        let HPBoost = Math.floor(hp * .0625 * 100);
+        let difference = hp - HPBoost;
+        return difference;
+    } else {
+        let HPBoost = Math.floor(hp * .0125 * 100);
+        let difference = HPBoost - hp;
+        return difference;
+    }
+}
 function initializeDisplay(plr, comp) {
     const playerImage = document.getElementById("player-pokemon");
     const compImage = document.getElementById("opponent-pokemon");
@@ -74,8 +85,6 @@ function initializeDisplay(plr, comp) {
 
     playerHealth.innerText = plr.HP + " HP";
     compHealth.innerText = comp.HP + " HP";
-
-
 
     const audioControl = document.getElementById("audio-control");
     const theme = new Audio("../assets/pokemon_battleMusic.m4a");
@@ -93,37 +102,42 @@ function initializeDisplay(plr, comp) {
 }
 
 function playerTurn() {
-    actionBar.innerText = playerPokemon.Name + "'s turn.";
+    actionBar.innerText = plrPokemon.Name + "'s turn.";
     attackButton.disabled = false;
-    defendButton.disabled = false;
+    healButton.disabled = false;
 
     return new Promise((resolve) => {
         attackButton.addEventListener("click", () => {
             attackButton.disabled = true;
-            defendButton.disabled = true;
+            healButton.disabled = true;
 
-            const dmg = calculateDamage(playerPokemon.Attack, playerPokemon.Defense, playerPokemon, compPokemon);
+            const dmg = calculateDamage(plrPokemon.Attack, plrPokemon.Defense, plrPokemon, compPokemon);
             compPokemon.HP -= dmg;
             compPokemon.HP = Math.max(0, compPokemon.HP);
             let healthPercent = (compPokemon.HP / compMaxHP) * 100;
 
             compHealth.style.width = healthPercent + "%";
             compHealth.innerText = compPokemon.HP + " HP";
-            actionBar.innerText = playerPokemon.Name + " dealt " + dmg + " damage!";
+            actionBar.innerText = plrPokemon.Name + " dealt " + dmg + " damage!";
 
             resolve();
-        })
+        }, { once: true })
 
-        defendButton.addEventListener("click", () => {
+        healButton.addEventListener("click", () => {
             attackButton.disabled = true;
-            defendButton.disabled = true;
+            healButton.disabled = true;
 
-            const defenseBoost = Math.round(Math.random() * (10 - 5) + 5);
-            playerPokemon.Defense += defenseBoost;
-            actionBar.innerText = playerPokemon.Name + " received " + defenseBoost + " defense points.";
+            const HPBoost = calculateHeal(plrPokemon.HP, plrMaxHP);
+            plrPokemon.HP += HPBoost;
+            plrPokemon.HP = Math.min(plrPokemon.HP, plrMaxHP);
+            let healthPercent = (plrPokemon.HP / plrMaxHP) * 100;
+
+            playerHealth.style.width = healthPercent + "%";
+            playerHealth.innerText = plrPokemon.HP + " HP";
+            actionBar.innerText = plrPokemon.Name + " recovered " + HPBoost + " HP.";
 
             resolve();
-        });
+        }, { once: true });
 
     });
 }
@@ -133,24 +147,29 @@ function computerTurn() {
     return new Promise((resolve) => {
         let choice = Math.floor(Math.random() * 2);
         if (choice == 0) {
-            const dmg = calculateDamage(compPokemon.Attack, compPokemon.Defense, compPokemon, playerPokemon);
-            playerPokemon.HP -= dmg;
-            playerPokemon.HP = Math.max(0, playerPokemon.HP);
+            const dmg = calculateDamage(compPokemon.Attack, compPokemon.Defense, compPokemon, plrPokemon);
+            plrPokemon.HP -= dmg;
+            plrPokemon.HP = Math.max(0, plrPokemon.HP);
             setTimeout(() => {
-                let healthPercent = (playerPokemon.HP / plrMaxHP) * 100;
+                let healthPercent = (plrPokemon.HP / plrMaxHP) * 100;
 
                 playerHealth.style.width = healthPercent + "%";
-                playerHealth.innerText = playerPokemon.HP + " HP";
+                playerHealth.innerText = plrPokemon.HP + " HP";
                 actionBar.innerText = compPokemon.Name + " dealt " + dmg + " damage!";
 
                 resolve();
             }, 5000)
 
         } else {
-            const defenseBoost = Math.round(Math.random() * (10 - 5) + 5);
+            const HPBoost = calculateHeal(compPokemon.HP, compMaxHP);
             setTimeout(() => {
-                compPokemon.Defense += defenseBoost;
-                actionBar.innerText = compPokemon.Name + " received " + defenseBoost + " defense points.";
+                compPokemon.HP += HPBoost;
+                compPokemon.HP = Math.min(plrPokemon.HP, plrMaxHP);
+                let healthPercent = (compPokemon.HP / compMaxHP) * 100;
+
+                compHealth.style.width = healthPercent + "%";
+                compHealth.innerText = compPokemon.HP + " HP";
+                actionBar.innerText = compPokemon.Name + " recovered " + HPBoost + " HP.";
 
                 resolve();
             }, 5000)
@@ -158,33 +177,38 @@ function computerTurn() {
     });
 }
 
+function endGame() {
+    alert("The game has ended. You will now be taken to the home page.");
+    window.location.pathname = "/csp%20project/src/index.html";
+}
+
 async function gameLoop() {
-    while (playerPokemon.HP > 0 && compPokemon.HP > 0) {
+    while (plrPokemon.HP > 0 && compPokemon.HP > 0) {
         await playerTurn();
         if (compPokemon.HP <= 0) break;
 
         await new Promise((resolve) => setTimeout(resolve, 5000));
 
         await computerTurn();
-        if (playerPokemon.HP <= 0) break;
+        if (plrPokemon.HP <= 0) break;
 
         await new Promise((resolve) => setTimeout(resolve, 5000));
     }
 
-    if (playerPokemon.HP > 0 && compPokemon.HP <= 0) {
-        actionBar.innerText = playerPokemon.Name + " Wins!";
+    if (plrPokemon.HP > 0 && compPokemon.HP <= 0) {
+        actionBar.innerText = plrPokemon.Name + " Wins!";
     } else {
         actionBar.innerText = compPokemon.Name + " Wins!";
     }
-    
+
 }
 
-
-
-function endGame() {
-    alert("The game has ended. You will now be taken to the home page.");
-    window.location.pathname = "/csp%20project/src/index.html";
-}
-
-initializeDisplay(playerPokemon, compPokemon);
+initializeDisplay(plrPokemon, compPokemon);
 gameLoop();
+
+/*
+Credits:
+Pokemon icons from Pokemon Database pokemondb.net
+Audio icons from Adobe Stock stock.adobe.com
+Pokemon Red and Blue Opening Theme is owned by the Pokemon Company International
+*/

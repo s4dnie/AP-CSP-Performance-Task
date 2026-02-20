@@ -36,7 +36,7 @@ body {
     display: block;
     margin: auto;
     margin-top: 100px;
-    font-family: "press start 2p", cursive;
+    font-family: "Press Start 2p", cursive;
     font-size: 52px;
 
     color: #f1e864;
@@ -45,7 +45,7 @@ body {
 
 .subheading {
     font-style: italic;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Farsan Display', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 24px;
     color: #1a266e;
 
@@ -89,3 +89,8 @@ body {
     align-items: center;
     gap: 10px;
 }
+
+/*Credits
+Font Press Start 2P imported from Google Fonts under SIL Open Font License
+Font Farsan imported from Google Fonts under SIL Open Font License
+*/
