@@ -70,6 +70,7 @@ function calculateHeal(currentHP, maxHP) {
         return difference;
     }
 }
+
 function initializeDisplay(plr, comp) {
     const playerImage = document.getElementById("player-pokemon");
     const compImage = document.getElementById("opponent-pokemon");
@@ -101,7 +102,7 @@ function initializeDisplay(plr, comp) {
     })
 }
 
-function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthElem, plrMaxHP, opponentMaxHP, actionBarElem) {
+function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthElem, playerMaxHP, opponentMaxHP, actionBarElem) {
     if (actionType === "attack") {
         const dmg = calculateDamage(plr.Attack, plr.Defense, plr, opponent);
         opponent.HP -= dmg;
@@ -113,11 +114,12 @@ function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthE
         OpponentHealthElem.innerText = opponent.HP + " HP";
         actionBarElem.innerText = plr.Name + " dealt " + dmg + " damage!";
     } else if (actionType === "heal") {
-        const HPBoost = calculateHeal(plr.HP, plrMaxHP);
-        console.log(plr.Name + "\n" + plr.HP);
-
-
-        let healthPercent = (plr.HP / plrMaxHP) * 100;
+        const HPBoost = calculateHeal(plr.HP, playerMaxHP);
+        console.log(plr.Name + "previous HP" + "\n" + plr.HP);
+        plr.HP += HPBoost;
+        plr.HP = Math.min(plr.HP, playerMaxHP);
+        console.log(plr.Name + "new HP" + "\n" + plr.HP);
+        let healthPercent = (plr.HP / playerMaxHP) * 100;
 
         plrHealthElem.style.width = healthPercent + "%";
         plrHealthElem.innerText = plr.HP + " HP";
@@ -131,17 +133,20 @@ function playerTurn() {
     attackButton.disabled = false;
     healButton.disabled = false;
     return new Promise((resolve) => {
-        attackButton.addEventListener("click", () => {
+        let attack = attackButton.addEventListener("click", () => {
             attackButton.disabled = true;
             healButton.disabled = true;
             performAction(plrPokemon, compPokemon, "attack", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
+            resolve();
         }, { once: true });
-        healButton.addEventListener("click", () => {
+        let heal = healButton.addEventListener("click", () => {
             attackButton.disabled = true;
             healButton.disabled = true;
             performAction(plrPokemon, compPokemon, "heal", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
+            resolve();
         }, { once: true });
-        resolve();
+        attackButton.removeEventListener("click", attack);
+        healButton.removeEventListener("click", heal);
     });
 }
 
@@ -151,13 +156,13 @@ function computerTurn() {
     return new Promise((resolve) => {
         setTimeout(() => {
             if (compPokemon.HP >= (compPokemon.HP * 0.7)) {
-                if (Math.random() < 0.7) {
+                if (Math.random() < 0.8) {
                     performAction(compPokemon, plrPokemon, "attack", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
                 } else {
                     performAction(compPokemon, plrPokemon, "heal", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
                 }
             } else {
-                if (Math.random() < 0.7) {
+                if (Math.random() < 0.8) {
                     performAction(compPokemon, plrPokemon, "heal", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
                 } else {
                     performAction(compPokemon, plrPokemon, "attack", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
