@@ -1,18 +1,14 @@
 import pokemonList from "../assets/pokemon.json" with {type: "json"};
 
+const plrPokemon = getPlayerPokemon(localStorage.getItem("selection"));
+const comPokemon = getComputerPokemon();
+const plrHealthBar = document.getElementById("player-health");
+const comHealthBar = document.getElementById("opponent-health");
+
 const actionBar = document.getElementById("message-bar");
 const attackButton = document.getElementById("attack-button");
 const healButton = document.getElementById("heal-button");
-
-const plrPokemon = getPlayerPokemon(localStorage.getItem("selection"));
-const compPokemon = getCompPokemon();
-const plrMaxHP = plrPokemon.HP;
-const compMaxHP = compPokemon.HP;
-const playerHealth = document.getElementById("player-health");
-const compHealth = document.getElementById("opponent-health");
-
-
-
+let plrHasChosen = false;
 
 function getPlayerPokemon(selection) {
     for (let i = 0; i < pokemonList.length; i++) {
@@ -23,7 +19,7 @@ function getPlayerPokemon(selection) {
     }
 }
 
-function getCompPokemon() {
+function getComputerPokemon() {
     const canBeStarter = JSON.parse(localStorage.getItem("canOpponentBeStarter"));
     const firstPokemonNotAStarter = 3;
 
@@ -61,7 +57,7 @@ function calculateDamage(attack, defense, plr1, plr2) {
 
 function calculateHeal(currentHP, maxHP) {
     if (currentHP <= (maxHP / 2)) {
-        let HPBoost = Math.floor(currentHP * 6.25);
+        let HPBoost = Math.floor(currentHP * 4.25);
         let difference = HPBoost - currentHP;
         return difference;
     } else {
@@ -70,21 +66,22 @@ function calculateHeal(currentHP, maxHP) {
         return difference;
     }
 }
-function initializeDisplay(plr, comp) {
-    const playerImage = document.getElementById("player-pokemon");
-    const compImage = document.getElementById("opponent-pokemon");
 
-    const playerName = document.getElementById("player-name");
-    const compName = document.getElementById("opponent-name");
+function initializeDisplay(plr, com) {
+    const plrIcon = document.getElementById("player-pokemon");
+    const comIcon = document.getElementById("opponent-pokemon");
 
-    playerImage.src = plr.Icon;
-    compImage.src = comp.Icon;
+    const plrName = document.getElementById("player-name");
+    const comName = document.getElementById("opponent-name");
 
-    playerName.innerText = plr.Name;
-    compName.innerText = comp.Name;
+    plrIcon.src = plr.Icon;
+    comIcon.src = com.Icon;
 
-    playerHealth.innerText = plr.HP + " HP";
-    compHealth.innerText = comp.HP + " HP";
+    plrName.innerText = plr.Name;
+    comName.innerText = com.Name;
+
+    plrHealthBar.innerText = plr["Max HP"] + " HP";
+    comHealthBar.innerText = com["Max HP"] + " HP";
 
     const audioControl = document.getElementById("audio-control");
     const theme = new Audio("../assets/pokemon_battleMusic.m4a");
@@ -101,66 +98,77 @@ function initializeDisplay(plr, comp) {
     })
 }
 
-function performAction(plr, opponent, actionType, plrHealthElem, OpponentHealthElem, plrMaxHP, opponentMaxHP, actionBarElem) {
-    if (actionType === "attack") {
-        const dmg = calculateDamage(plr.Attack, plr.Defense, plr, opponent);
-        opponent.HP -= dmg;
-        opponent.HP = Math.max(0, opponent.HP);
-        console.log(opponent.Name + "\n" + opponent.HP);
-        let healthPercent = (opponent.HP / opponentMaxHP) * 100;
+function action(actor, target, actionType, actorHPBar, targetHPBar) {
+    if (actionType === "heal") {
+        const HPBoost = calculateHeal(actor["Current HP"], actor["Max HP"]);
+        actor["Current HP"] += HPBoost;
+        const healthIncrease = actor["Current HP"] / actor["Max HP"] * 100;
+        actor["Current HP"] = Math.min(actor["Current HP"], actor["Max HP"]);
 
-        OpponentHealthElem.style.width = healthPercent + "%";
-        OpponentHealthElem.innerText = opponent.HP + " HP";
-        actionBarElem.innerText = plr.Name + " dealt " + dmg + " damage!";
-    } else if (actionType === "heal") {
-        const HPBoost = calculateHeal(plr.HP, plrMaxHP);
-        console.log(plr.Name + "\n" + plr.HP);
+        actionBar.innerText = actor["Name"] + " recovered " + HPBoost + " HP!";
+        actorHPBar.style.width = healthIncrease + "%";
+        actorHPBar.innerText = actor["Current HP"] + " HP";
+    } else if (actionType === "attack") {
+        const dmg = calculateDamage(actor["Attack"], actor["Defense"], actor, target);
+        target["Current HP"] -= dmg;
+        target["Current HP"] = Math.max(target["Current HP"], 0);
+        const healthDecrease = target["Current HP"] / target["Max HP"] * 100;
 
-
-        let healthPercent = (plr.HP / plrMaxHP) * 100;
-
-        plrHealthElem.style.width = healthPercent + "%";
-        plrHealthElem.innerText = plr.HP + " HP";
-        actionBarElem.innerText = plr.Name + " recovered " + HPBoost + " HP.";
+        actionBar.innerText = actor["Name"] + " dealt " + dmg + " damage!";
+        targetHPBar.style.width = healthDecrease + "%";
+        targetHPBar.innerText = target["Current HP"] + " HP";
     }
 }
 
+attackButton.addEventListener("click", () => {
+    attackButton.disabled = true;
+    healButton.disabled = true;
 
-function playerTurn() {
-    actionBar.innerText = plrPokemon.Name + "'s turn.";
+    plrHasChosen = true;
+    action(plrPokemon, comPokemon, "attack", plrHealthBar, comHealthBar);
+});
+
+healButton.addEventListener("click", () => {
+    attackButton.disabled = true;
+    healButton.disabled = true;
+
+    plrHasChosen = true;
+    action(plrPokemon, comPokemon, "heal", plrHealthBar, comHealthBar);
+});
+
+function plrTurn() {
+    actionBar.innerText = plrPokemon["Name"] + "'s turn.";
+
     attackButton.disabled = false;
     healButton.disabled = false;
+    plrHasChosen = false;
+
     return new Promise((resolve) => {
-        attackButton.addEventListener("click", () => {
-            attackButton.disabled = true;
-            healButton.disabled = true;
-            performAction(plrPokemon, compPokemon, "attack", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
-        }, { once: true });
-        healButton.addEventListener("click", () => {
-            attackButton.disabled = true;
-            healButton.disabled = true;
-            performAction(plrPokemon, compPokemon, "heal", playerHealth, compHealth, plrMaxHP, compMaxHP, actionBar);
-        }, { once: true });
-        resolve();
+        let check = setInterval(() => {
+            if (plrHasChosen == true) {
+                clearInterval(check);
+                resolve();
+            }
+        }, 1000)
     });
 }
 
-function computerTurn() {
-    actionBar.innerText = compPokemon.Name + "'s turn.";
+function comTurn() {
+    actionBar.innerText = comPokemon["Name"] + "'s turn.";
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            if (compPokemon.HP >= (compPokemon.HP * 0.7)) {
-                if (Math.random() < 0.7) {
-                    performAction(compPokemon, plrPokemon, "attack", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+            if (comPokemon["Current HP"] >= (comPokemon["Max HP"] * 0.7)) {
+                if (Math.random() < 0.8) {
+                    action(comPokemon, plrPokemon, "attack", comHealthBar, plrHealthBar);
                 } else {
-                    performAction(compPokemon, plrPokemon, "heal", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                    action(comPokemon, plrPokemon, "heal", comHealthBar, plrHealthBar);
                 }
             } else {
                 if (Math.random() < 0.7) {
-                    performAction(compPokemon, plrPokemon, "heal", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                    action(comPokemon, plrPokemon, "heal", comHealthBar, plrHealthBar);
                 } else {
-                    performAction(compPokemon, plrPokemon, "attack", compHealth, playerHealth, compMaxHP, plrMaxHP, actionBar);
+                    action(comPokemon, plrPokemon, "attack", comHealthBar, plrHealthBar);
                 }
             }
             resolve();
@@ -168,12 +176,29 @@ function computerTurn() {
     });
 }
 
+async function game() {
+    initializeDisplay(plrPokemon, comPokemon);
+    do {
+        await plrTurn();
+        if (comPokemon["Current HP"] <= 0) break;
+
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+
+        await comTurn();
+
+        if (plrPokemon["Current HP"] <= 0) break;
+
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+    } while (plrPokemon["Current HP"] > 0 && comPokemon["Current HP"] > 0)
+
+    endGame();
+}
 
 function endGame() {
-    if (plrPokemon.HP > 0 && compPokemon.HP <= 0) {
-        actionBar.innerText = plrPokemon.Name + " Wins!";
+    if (plrPokemon["Current HP"] > 0 && comPokemon["Current HP"] <= 0) {
+        actionBar.innerText = plrPokemon["Name"] + " Wins!";
     } else {
-        actionBar.innerText = compPokemon.Name + " Wins!";
+        actionBar.innerText = comPokemon["Name"] + " Wins!";
     }
 
     setTimeout(() => {
@@ -182,28 +207,8 @@ function endGame() {
     }, 5000);
 }
 
-async function gameLoop() {
-    while (plrPokemon.HP > 0 && compPokemon.HP > 0) {
-        await playerTurn();
-        if (compPokemon.HP <= 0) break;
+game();
 
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+//Credits
 
-        await computerTurn();
-        if (plrPokemon.HP <= 0) break;
-
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-    }
-
-    endGame();
-}
-
-initializeDisplay(plrPokemon, compPokemon);
-gameLoop();
-
-/*
-Credits:
-Pokemon icons from Pokemon Database pokemondb.net
-Audio icons from Adobe Stock stock.adobe.com
-Pokemon Red and Blue Opening Theme is owned by the Pokemon Company International
-*/
+//Pokemon characters and the Pokemon Red and Blue Opening Theme are owned by the Pokemon Company

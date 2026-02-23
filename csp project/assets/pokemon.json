@@ -3,7 +3,8 @@
 		"ID": 1,
 		"Name": "Charmander",
 		"Type": "Fire",
-		"HP": 39,
+		"Current HP": 39,
+		"Max HP": 39,
 		"Attack": 52,
 		"Defense": 43,
 		"Icon": "../assets/pokemon sprites/charmander.png"
@@ -12,7 +13,8 @@
 		"ID": 2,
 		"Name": "Squirtle",
 		"Type": "Water",
-		"HP": 44,
+		"Current HP": 44,
+		"Max HP": 44,
 		"Attack": 48,
 		"Defense": 65,
 		"Icon": "../assets/pokemon sprites/squirtle.png"
@@ -21,7 +23,8 @@
 		"ID": 3,
 		"Name": "Bulbasaur",
 		"Type": "Grass",
-		"HP": 45,
+		"Current HP": 45,
+		"Max HP": 45,
 		"Attack": 49,
 		"Defense": 49,
 		"Icon": "../assets/pokemon sprites/bulbasaur.png"
@@ -30,7 +33,8 @@
 		"ID": 4,
 		"Name": "Pikachu",
 		"Type": "Electric",
-		"HP": 35,
+		"Current HP": 35,
+		"Max HP": 35,
 		"Attack": 55,
 		"Defense": 40,
 		"Icon": "../assets/pokemon sprites/pikachu.png"
@@ -39,7 +43,8 @@
 		"ID": 5,
 		"Name": "Jigglypuff",
 		"Type": "Normal",
-		"HP": 115,
+		"Current HP": 115,
+		"Max HP": 115,
 		"Attack": 45,
 		"Defense": 20,
 		"Icon": "../assets/pokemon sprites/jigglypuff.png"
@@ -48,7 +53,8 @@
 		"ID": 6,
 		"Name": "Eevee",
 		"Type": "Normal",
-		"HP": 55,
+		"Current HP": 55,
+		"Max HP": 55,
 		"Attack": 55,
 		"Defense": 50,
 		"Icon": "../assets/pokemon sprites/eevee.png"
@@ -57,7 +63,8 @@
 		"ID": 7,
 		"Name": "Mew",
 		"Type": "Psychic",
-		"HP": 100,
+		"Current HP": 100,
+		"Max HP": 100,
 		"Attack": 100,
 		"Defense": 100,
 		"Icon": "../assets/pokemon sprites/mew.png"
@@ -66,7 +73,8 @@
 		"ID": 8,
 		"Name": "Meowth",
 		"Type": "Normal",
-		"HP": 40,
+		"Current HP": 40,
+		"Max HP": 40,
 		"Attack": 45,
 		"Defense": 35,
 		"Icon": "../assets/pokemon sprites/meowth.png"
@@ -75,7 +83,8 @@
 		"ID": 9,
 		"Name": "Gengar",
 		"Type": "Poison",
-		"HP": 60,
+		"Current HP": 60,
+		"Max HP": 60,
 		"Attack": 65,
 		"Defense": 60,
 		"Icon": "../assets/pokemon sprites/gengar.png"
@@ -84,7 +93,8 @@
 		"ID": 10,
 		"Name": "Snorlax",
 		"Type": "Normal",
-		"HP": 160,
+		"Current HP": 160,
+		"Max HP": 160,
 		"Attack": 110,
 		"Defense": 65,
 		"Icon": "../assets/pokemon sprites/snorlax.png"
