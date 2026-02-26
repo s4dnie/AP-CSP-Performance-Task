@@ -10,6 +10,9 @@ const attackButton = document.getElementById("attack-button");
 const healButton = document.getElementById("heal-button");
 let plrHasChosen = false;
 
+//Checks the form data against pokemonList and returns the matching Pokemon object
+//selection {string} - the starter Pokemon that the user selected on the form page
+//return {object} - the user's Pokemon as an object
 function getPlayerPokemon(selection) {
     for (let i = 0; i < pokemonList.length; i++) {
         if (selection.toLowerCase() == pokemonList[i]["Name"].toLowerCase()) {
@@ -18,7 +21,8 @@ function getPlayerPokemon(selection) {
         }
     }
 }
-
+//Randomly selects the computer's Pokemon based on whether the user allows for it to be a starter or not
+//return {object} - the computer's Pokemon as an object
 function getComputerPokemon() {
     const canBeStarter = JSON.parse(localStorage.getItem("canOpponentBeStarter"));
     const firstPokemonNotAStarter = 3;
@@ -31,11 +35,16 @@ function getComputerPokemon() {
         return compPokemon;
     }
 }
-
-function calculateDamage(attack, defense, plr1, plr2) {
+//Calculates the amount of damage given when either the player or computer chooses to attack
+//attack {number} - the current attacker's attack stat
+//defense {number} - the current attacker's defense stat
+//actor {string} - who is currently attacking
+//target {string} - who is currently being attacked
+//return {number} - the final amount of damage given
+function calculateDamage(attack, defense, actor, target) {
     let baseDmg = ((((2 * (Math.floor(Math.random() * 11))) / 5 + 2) * attack * (attack / defense)) / 50) + 2;
 
-    switch (plr1["Type"] + plr2["Type"]) {
+    switch (actor["Type"] + target["Type"]) {
         case "WaterFire":
             baseDmg = Math.round(baseDmg * 2);
             return baseDmg;
@@ -54,10 +63,13 @@ function calculateDamage(attack, defense, plr1, plr2) {
     }
     return Math.round(baseDmg);
 }
-
+//Calculates the amount of health recovered when either the player or computer chooses to heal
+//currentHP {number} - the actor's current health
+//maxHP {number} - the actor's max possible health
+//return {number} - the final amount of health recovered
 function calculateHeal(currentHP, maxHP) {
     if (currentHP <= (maxHP / 2)) {
-        let HPBoost = Math.floor(currentHP * 4.25);
+        let HPBoost = Math.floor(currentHP * 2);
         let difference = HPBoost - currentHP;
         return difference;
     } else {
@@ -66,7 +78,9 @@ function calculateHeal(currentHP, maxHP) {
         return difference;
     }
 }
-
+//Updates the screen from default values to the values corresponding to the player and computer Pokemon
+//plr {string} - the player Pokemon and its display
+//com {string} - the computer Pokemon and its display
 function initializeDisplay(plr, com) {
     const plrIcon = document.getElementById("player-pokemon");
     const comIcon = document.getElementById("opponent-pokemon");
@@ -97,7 +111,12 @@ function initializeDisplay(plr, com) {
         }
     })
 }
-
+//Performs either an attack or heal during the actor's turn
+//actor {string} - who's turn it currently is
+//target {string} - who's turn it is not
+//actionType {string} - whether the actor is attacking or healing
+//actorHPBar {HTMLElement} - the actor's health bar display
+//targetHPBar {HTMLElement} - the target's health bar display
 function action(actor, target, actionType, actorHPBar, targetHPBar) {
     if (actionType === "heal") {
         const HPBoost = calculateHeal(actor["Current HP"], actor["Max HP"]);
@@ -120,22 +139,7 @@ function action(actor, target, actionType, actorHPBar, targetHPBar) {
     }
 }
 
-attackButton.addEventListener("click", () => {
-    attackButton.disabled = true;
-    healButton.disabled = true;
-
-    plrHasChosen = true;
-    action(plrPokemon, comPokemon, "attack", plrHealthBar, comHealthBar);
-});
-
-healButton.addEventListener("click", () => {
-    attackButton.disabled = true;
-    healButton.disabled = true;
-
-    plrHasChosen = true;
-    action(plrPokemon, comPokemon, "heal", plrHealthBar, comHealthBar);
-});
-
+//Displays that it is the player's turn and awaits the player's action 
 function plrTurn() {
     actionBar.innerText = plrPokemon["Name"] + "'s turn.";
 
@@ -152,13 +156,13 @@ function plrTurn() {
         }, 1000)
     });
 }
-
+//Displays that it is the computer's turn and awaits the computer's action
 function comTurn() {
     actionBar.innerText = comPokemon["Name"] + "'s turn.";
 
     return new Promise((resolve) => {
         setTimeout(() => {
-            if (comPokemon["Current HP"] >= (comPokemon["Max HP"] * 0.7)) {
+            if (comPokemon["Current HP"] >= (comPokemon["Max HP"] * 0.5)) {
                 if (Math.random() < 0.8) {
                     action(comPokemon, plrPokemon, "attack", comHealthBar, plrHealthBar);
                 } else {
@@ -175,7 +179,7 @@ function comTurn() {
         }, 5000);
     });
 }
-
+//Loops the game until either the player or computer runs out of health, then ends the game
 async function game() {
     initializeDisplay(plrPokemon, comPokemon);
     do {
@@ -193,7 +197,7 @@ async function game() {
 
     endGame();
 }
-
+//Ends the game by displaying the winner, then taking the user back to the home page
 function endGame() {
     if (plrPokemon["Current HP"] > 0 && comPokemon["Current HP"] <= 0) {
         actionBar.innerText = plrPokemon["Name"] + " Wins!";
@@ -206,6 +210,22 @@ function endGame() {
         window.location.pathname = "/csp%20project/src/index.html";
     }, 5000);
 }
+
+attackButton.addEventListener("click", () => {
+    attackButton.disabled = true;
+    healButton.disabled = true;
+
+    plrHasChosen = true;
+    action(plrPokemon, comPokemon, "attack", plrHealthBar, comHealthBar);
+});
+
+healButton.addEventListener("click", () => {
+    attackButton.disabled = true;
+    healButton.disabled = true;
+
+    plrHasChosen = true;
+    action(plrPokemon, comPokemon, "heal", plrHealthBar, comHealthBar);
+});
 
 game();
 
